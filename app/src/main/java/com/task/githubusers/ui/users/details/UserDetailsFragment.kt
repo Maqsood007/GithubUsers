@@ -1,4 +1,4 @@
-package com.task.githubusers.ui.details
+package com.task.githubusers.ui.users.details
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

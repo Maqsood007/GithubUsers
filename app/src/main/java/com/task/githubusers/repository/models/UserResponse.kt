@@ -1,12 +1,15 @@
 package com.task.githubusers.repository.models
 
+import com.google.gson.annotations.SerializedName
+
 data class UserResponse(
     val incomplete_results: Boolean?,
-    val items: List<Item>?,
+    @SerializedName("User")
+    val users: List<User>?,
     val total_count: Int?
 )
 
-data class Item(
+data class User(
     val avatar_url: String?,
     val events_url: String?,
     val followers_url: String?,

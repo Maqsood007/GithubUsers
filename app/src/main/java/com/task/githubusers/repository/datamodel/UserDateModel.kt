@@ -1,6 +1,8 @@
 package com.task.githubusers.repository.datamodel
 
+import com.task.githubusers.repository.models.User
 import com.task.githubusers.repository.server.GithubUserAPI
+import rx.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,6 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class UserDateModel @Inject constructor(private val githubUserAPI: GithubUserAPI) {
 
-    fun getUsers(query: String, page: Int, perPage: Int) =
+    fun getUsers(query: String, page: Int, perPage: Int): Observable<List<User>> =
         githubUserAPI.getUsers(query, page, perPage)
+            .map { if (it.isSuccessful) it.body()?.users ?: emptyList() else emptyList() }
 }

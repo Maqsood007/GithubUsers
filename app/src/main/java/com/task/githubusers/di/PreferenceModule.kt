@@ -3,6 +3,7 @@ package com.task.githubusers.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import com.task.githubusers.utils.AppConstants.SHARED_PREF
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object PreferenceModule {
-
-    private const val SHARED_PREF = "pref_github_user"
 
     @Provides
     fun providePreference(application: Application): SharedPreferences {

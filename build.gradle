@@ -24,7 +24,7 @@ buildscript {
                 lifecycle_livedata         : "2.4.1",
                 lifecycle_extensions         : "2.2.0",
 
-                coroutines             : "1.5.0",
+                rxAndroidVersion : '1.2.1',
 
                 circleimageview   : "3.0.1",
                 picasso   : "2.71828",
