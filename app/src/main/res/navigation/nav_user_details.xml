@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.task.githubusers.ui.users.UserFragment"
-        android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_user">
         <action
             android:id="@+id/action_userFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment" />
@@ -17,6 +17,10 @@
     <fragment
         android:id="@+id/userDetailsFragment"
         android:name="com.task.githubusers.ui.users.details.UserDetailsFragment"
-        android:label="fragment_user_details"
-        tools:layout="@layout/fragment_user_details" />
+        android:label="{title}"
+        tools:layout="@layout/fragment_user_details">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 </navigation>
