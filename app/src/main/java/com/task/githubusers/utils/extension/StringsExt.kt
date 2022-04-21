@@ -5,5 +5,3 @@ package com.task.githubusers.utils.extension
  */
 
 fun String?.safeGet() = this ?: ""
-
-fun empty () = ""

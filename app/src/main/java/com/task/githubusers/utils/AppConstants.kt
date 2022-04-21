@@ -6,4 +6,5 @@ package com.task.githubusers.utils
 object AppConstants {
 
     const val SHARED_PREF = "pref_github_user"
+    const val DEFAULT_URL = "https://www.google.com/"
 }
