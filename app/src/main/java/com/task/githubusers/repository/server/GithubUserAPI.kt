@@ -11,9 +11,9 @@ import rx.Observable
  */
 interface GithubUserAPI {
 
-    @GET("search/users")
+    @GET("search/users?q=followers:>=0&sort:followers")
     fun getUsers(
-        @Query("q") query: String,
+        @Query("o") order: String = "desc",
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Observable<Response<UserResponse>>

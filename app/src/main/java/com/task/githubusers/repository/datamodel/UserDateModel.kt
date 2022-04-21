@@ -14,6 +14,8 @@ import javax.inject.Singleton
 class UserDateModel @Inject constructor(private val githubUserAPI: GithubUserAPI) {
 
     fun getUsers(query: String, page: Int, perPage: Int): Observable<List<User>> =
-        githubUserAPI.getUsers(query, page, perPage)
-            .map { if (it.isSuccessful) it.body()?.users ?: emptyList() else emptyList() }
+        githubUserAPI.getUsers(page = page, perPage = perPage)
+            .map {
+                if (it.isSuccessful) it.body()?.users ?: emptyList() else emptyList()
+            }
 }

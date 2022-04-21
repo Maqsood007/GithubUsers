@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UserResponse(
     val incomplete_results: Boolean?,
-    @SerializedName("User")
+    @SerializedName("items")
     val users: List<User>?,
     val total_count: Int?
 )

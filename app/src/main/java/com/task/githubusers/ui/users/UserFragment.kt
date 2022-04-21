@@ -5,15 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.task.githubusers.R
 import com.task.githubusers.databinding.FragmentUserBinding
 import com.task.githubusers.repository.models.User
-import com.task.githubusers.utils.extension.ViewState
-import com.task.githubusers.utils.extension.empty
-import com.task.githubusers.utils.extension.message
-import com.task.githubusers.utils.extension.progress
+import com.task.githubusers.ui.users.details.UserDetailsFragment
+import com.task.githubusers.ui.users.details.UserDetailsFragment.Companion.TOP_TITLE
+import com.task.githubusers.utils.extension.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,7 +23,7 @@ class UserFragment : Fragment() {
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var binding: FragmentUserBinding
 
-    private val adapter = UserListAdapter { showUserDetails(it) }
+    private val adapter = UserListAdapter { name, url -> showUserDetails(name, url) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +35,7 @@ class UserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recycleViewUsers.setHasFixedSize(true)
+        binding.recycleViewUsers.adapter = adapter
         activity?.lifecycleScope?.launchWhenCreated {
             initialization(savedInstanceState)
         }
@@ -42,7 +43,7 @@ class UserFragment : Fragment() {
 
     private fun initialization(savedInstanceState: Bundle?) {
         userViewModel.state.observe(viewLifecycleOwner) { onStateChanged(it) }
-        "QUERY_KEY".let { userViewModel.search(it) }
+        "followers:>=0&sort:followers".let { userViewModel.search(it) }
     }
 
     private fun onStateChanged(state: ViewState?) = when (state) {
@@ -68,5 +69,15 @@ class UserFragment : Fragment() {
     }
 
 
-    private fun showUserDetails(profile: String) = Unit
+    private fun showUserDetails(name: String, url: String) {
+
+        val bundle: Bundle = bundleOf(
+            UserDetailsFragment.URL_TO_BROWSE to url,
+            TOP_TITLE to name.uppercase()
+        )
+        findNavController().navigate(
+            R.id.action_userFragment_to_userDetailsFragment,
+            bundle
+        )
+    }
 }

@@ -13,7 +13,7 @@ import com.task.githubusers.utils.extension.safeGet
 /**
  * Recycler adapter for User List in [UserFragment]
  */
-class UserListAdapter(private val onItemClick: (String) -> Unit) :
+class UserListAdapter(private val onItemClick: (String, String) -> Unit) :
     RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
     private val items = ArrayList<User>()
@@ -31,7 +31,7 @@ class UserListAdapter(private val onItemClick: (String) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = items[position]
         holder.listItemUserBinding.apply {
-            root.setOnClickListener { onItemClick(user.html_url.safeGet()) }
+            root.setOnClickListener { onItemClick(user.login.safeGet(), user.html_url.safeGet()) }
             textViewUserName.text = user.login
             Picasso.get()
                 .load(user.avatar_url)
