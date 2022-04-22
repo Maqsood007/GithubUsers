@@ -20,21 +20,17 @@ class UserViewModel @Inject constructor(private val userDateModel: UserDateModel
 
     private val subscriptions: CompositeSubscription = CompositeSubscription()
     val state = StateLiveData()
+    val mostFollowedQuery = "followers:>=0&sort:followers"
 
     /**
      * Get users by query, perform API call
      */
-    fun search(query: String, page: Int = 0, perPage: Int = 10) {
-        val currentValue = state.value
-        if (currentValue is ViewState.DataLoaded && currentValue.query == query) return
+    fun search(query: String, page: Int = 0, perPage: Int = 10, requestType: RequestType) {
         val s = getRemoteData(query, page, perPage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { state.value = ViewState.StateProgress }
-            .subscribe({ state.value = ViewState.DataLoaded(query, it) }, {
-                state.value =
-                    ViewState.StateError(it)
-            })
+            .doOnSubscribe { setLoadingState(requestType) }
+            .subscribe({ setDataState(query, users = it) }, { setErrorState(throwable = it) })
         subscriptions.add(s)
     }
 
@@ -42,9 +38,27 @@ class UserViewModel @Inject constructor(private val userDateModel: UserDateModel
         userDateModel
             .getUsers(query, page, perPage)
 
+    private fun setLoadingState(requestType: RequestType) {
+        state.value =
+            if (requestType == RequestType.LOAD) ViewState.StateProgress else ViewState.StatePullToRefresh
+    }
+
+    private fun setDataState(query: String, users: List<User>) {
+        state.value = ViewState.DataLoaded(query, users)
+    }
+
+    private fun setErrorState(throwable: Throwable) {
+        state.value = ViewState.StateError(throwable)
+    }
+
     override fun onCleared() {
         super.onCleared()
         subscriptions.unsubscribe()
+    }
+
+    enum class RequestType {
+        LOAD,
+        PULL_TO_REFRESH
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 sealed class ViewState {
     object StateIdle : ViewState()
     object StateProgress : ViewState()
+    object StatePullToRefresh: ViewState()
     data class StateError(val throwable: Throwable) : ViewState()
     data class DataLoaded(val query: String, val users: Any) : ViewState()
 }

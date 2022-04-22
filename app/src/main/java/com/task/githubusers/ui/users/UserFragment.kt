@@ -37,13 +37,30 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.recycleViewUsers.adapter = adapter
         activity?.lifecycleScope?.launchWhenCreated {
-            initialization(savedInstanceState)
+            initialization()
+            initPullToRefresh()
         }
     }
 
-    private fun initialization(savedInstanceState: Bundle?) {
+    private fun initialization() {
         userViewModel.state.observe(viewLifecycleOwner) { onStateChanged(it) }
-        "followers:>=0&sort:followers".let { userViewModel.search(it) }
+        userViewModel.mostFollowedQuery.let {
+            userViewModel.search(
+                query = it,
+                requestType = UserViewModel.RequestType.LOAD
+            )
+        }
+    }
+
+    private fun initPullToRefresh() {
+        binding.swipeContainer.setOnRefreshListener {
+            userViewModel.mostFollowedQuery.let {
+                userViewModel.search(
+                    query = it,
+                    requestType = UserViewModel.RequestType.PULL_TO_REFRESH
+                )
+            }
+        }
     }
 
     private fun onStateChanged(state: ViewState?) = when (state) {
@@ -58,16 +75,22 @@ class UserFragment : Fragment() {
 
     private fun setUsers(users: List<User>) = if (users.isEmpty()) {
         binding.userViewStates.flipper.message()
+        setSwipeToRefreshAnimationEnd()
         adapter.clearItems()
     } else {
+        setSwipeToRefreshAnimationEnd()
         binding.userViewStates.flipper.empty()
         adapter.setItems(users)
     }
 
     private fun showError(throwable: Throwable, message: Int) {
+        binding.swipeContainer.gone()
         binding.userViewStates.flipper.message()
     }
 
+    private fun setSwipeToRefreshAnimationEnd() {
+        binding.swipeContainer.isRefreshing = false
+    }
 
     private fun showUserDetails(name: String, url: String) {
 
