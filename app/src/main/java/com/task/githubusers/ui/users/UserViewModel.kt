@@ -26,12 +26,20 @@ class UserViewModel @Inject constructor(private val userDateModel: UserDateModel
      * Get users by query, perform API call
      */
     fun search(query: String, page: Int = 0, perPage: Int = 10, requestType: RequestType) {
+        if (isDataLoaded(requestType, page)) return
         val s = getRemoteData(query, page, perPage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { setLoadingState(requestType) }
-            .subscribe({ setDataState(query, users = it) }, { setErrorState(throwable = it) })
+            .subscribe({ setDataState(page, users = it) }, { setErrorState(throwable = it) })
         subscriptions.add(s)
+    }
+
+    private fun isDataLoaded(requestType: RequestType, page: Int): Boolean {
+        val currentValue = state.value
+        return currentValue is ViewState.DataLoaded
+                && currentValue.page == page
+                && requestType == RequestType.LOAD
     }
 
     private fun getRemoteData(query: String, page: Int, perPage: Int): Observable<List<User>> =
@@ -43,8 +51,8 @@ class UserViewModel @Inject constructor(private val userDateModel: UserDateModel
             if (requestType == RequestType.LOAD) ViewState.StateProgress else ViewState.StatePullToRefresh
     }
 
-    private fun setDataState(query: String, users: List<User>) {
-        state.value = ViewState.DataLoaded(query, users)
+    private fun setDataState(page: Int, users: List<User>) {
+        state.value = ViewState.DataLoaded(page, users)
     }
 
     private fun setErrorState(throwable: Throwable) {

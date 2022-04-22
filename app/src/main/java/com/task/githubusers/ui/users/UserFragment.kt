@@ -20,11 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UserFragment : Fragment() {
 
+    //region VARIABLES
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var binding: FragmentUserBinding
+    private var adapter: UserListAdapter? = null
+    //endregion
 
-    private val adapter = UserListAdapter { name, url -> showUserDetails(name, url) }
-
+    // region LIFECYCLE
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,11 +37,24 @@ class UserFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recycleViewUsers.adapter = adapter
+        initAdapter()
         activity?.lifecycleScope?.launchWhenCreated {
             initialization()
             initPullToRefresh()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.recycleViewUsers.adapter = null
+    }
+    //endregion
+
+    //region INITIALIZATION
+    private fun initAdapter() {
+        adapter = UserListAdapter { name, url -> showUserDetails(name, url) }
+        binding.recycleViewUsers.adapter = adapter
+
     }
 
     private fun initialization() {
@@ -62,7 +77,9 @@ class UserFragment : Fragment() {
             }
         }
     }
+    //endregion
 
+    //region UTILS
     private fun onStateChanged(state: ViewState?) = when (state) {
         is ViewState.StateProgress -> binding.userViewStates.flipper.progress()
         is ViewState.DataLoaded -> setUsers(state.users as List<User>)
@@ -76,11 +93,11 @@ class UserFragment : Fragment() {
     private fun setUsers(users: List<User>) = if (users.isEmpty()) {
         binding.userViewStates.flipper.message()
         setSwipeToRefreshAnimationEnd()
-        adapter.clearItems()
+        adapter?.clearItems()
     } else {
         setSwipeToRefreshAnimationEnd()
         binding.userViewStates.flipper.empty()
-        adapter.setItems(users)
+        adapter?.setItems(users)
     }
 
     private fun showError(throwable: Throwable, message: Int) {
@@ -103,4 +120,5 @@ class UserFragment : Fragment() {
             bundle
         )
     }
+    //endregion
 }

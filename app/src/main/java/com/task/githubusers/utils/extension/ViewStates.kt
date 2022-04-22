@@ -14,7 +14,7 @@ sealed class ViewState {
     object StateProgress : ViewState()
     object StatePullToRefresh: ViewState()
     data class StateError(val throwable: Throwable) : ViewState()
-    data class DataLoaded(val query: String, val users: Any) : ViewState()
+    data class DataLoaded(val page: Int, val users: Any) : ViewState()
 }
 
 /**
