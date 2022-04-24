@@ -27,7 +27,7 @@ Android application that fetches the Github users sorted by the most followed on
 - Picasso added for image loading & rendering.
 - Support for Dark and Light theme.
 
-#Scope Covered.
+# Scope Covered.
 
 - Light and dark theme support.
 - Loading github users by most followers
@@ -36,8 +36,30 @@ Android application that fetches the Github users sorted by the most followed on
 - Github authentication
 - User details.
 
+
 # Light Theme
 ![alt text](https://github.com/Maqsood007/GithubUsers/blob/main/screenshots/light_theme.jpeg)
 
 # Dark Theme
 ![alt text](https://github.com/Maqsood007/GithubUsers/blob/main/screenshots/dark_theme.jpeg)
+
+# APK to install
+![alt text](https://i.diawi.com/GzpBJ4)
+![alt text](https://drive.google.com/file/d/1DB6eEzE6fvUkn1TGAHN_PMAEI01OaBI5/view?usp=sharing)
+
+# Infinite Loading
+![alt text](https://drive.google.com/file/d/10_7GP2PmqBKpIPLDWtayigibaPzPMIkG/view?usp=sharing)
+
+# Github Login
+![alt text](https://drive.google.com/file/d/10VQmSmt9dELaVra3GwCnqJfB08ycmPlX/view?usp=sharing)
+
+# Pull to refresh
+![alt text](https://drive.google.com/file/d/10ZMpE0G01X_hL8gzr10fZ8dhOpweG29S/view?usp=sharing)
+
+
+
+
+
+
+
+
