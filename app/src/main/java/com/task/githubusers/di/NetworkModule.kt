@@ -33,11 +33,9 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor {
                 val request = it.request()
-
                 val newUrl: HttpUrl?
                 newUrl = request.url.newBuilder()
                     .build()
-
                 it.proceed(
                     request.newBuilder()
                         .url(newUrl)
@@ -62,6 +60,7 @@ object NetworkModule {
             .baseUrl(baseUrl)
             .client(httpClient)
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(converterFactory)
             .build()
     }
