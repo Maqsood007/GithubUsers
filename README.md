@@ -44,8 +44,8 @@ Android application that fetches the Github users sorted by the most followed on
 ![alt text](https://github.com/Maqsood007/GithubUsers/blob/main/screenshots/dark_theme.jpeg)
 
 # APK to install
-[Direct Install](https://i.diawi.com/GzpBJ4)
-[Download  and Install](https://drive.google.com/file/d/1DB6eEzE6fvUkn1TGAHN_PMAEI01OaBI5/view?usp=sharing)
+- [Direct Install](https://i.diawi.com/GzpBJ4)
+- [Download  and Install](https://drive.google.com/file/d/1DB6eEzE6fvUkn1TGAHN_PMAEI01OaBI5/view?usp=sharing)
 
 # Infinite Loading
 [Go to video](https://drive.google.com/file/d/10_7GP2PmqBKpIPLDWtayigibaPzPMIkG/view?usp=sharing)
